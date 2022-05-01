@@ -10,7 +10,6 @@ import com.rpfcoding.stockmarketwithopencsv.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +23,12 @@ class CompanyListingsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
+    init {
+        getCompanyListings(query = "")
+    }
+
     fun onEvent(event: CompanyListingsEvent) {
-        when(event) {
+        when (event) {
             is CompanyListingsEvent.OnSearchQueryChange -> {
                 state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
@@ -51,7 +54,7 @@ class CompanyListingsViewModel @Inject constructor(
                 fetchFromRemote = fetchFromRemote,
                 query = query
             ).collect { result ->
-                when(result) {
+                when (result) {
                     is Resource.Error -> {
                         state = state.copy(errorMessage = result.message)
                     }
