@@ -1,7 +1,6 @@
 package com.rpfcoding.stockmarketwithopencsv.data.repository
 
 import com.rpfcoding.stockmarketwithopencsv.data.csv.CSVParser
-import com.rpfcoding.stockmarketwithopencsv.data.csv.CompanyListingsParser
 import com.rpfcoding.stockmarketwithopencsv.data.local.StockDatabase
 import com.rpfcoding.stockmarketwithopencsv.data.mapper.toCompanyListing
 import com.rpfcoding.stockmarketwithopencsv.data.mapper.toCompanyListingEntity
@@ -39,7 +38,7 @@ class StockRepositoryImpl @Inject constructor(
             val isDbEmpty = localListings.isEmpty() && query.isBlank()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
 
-            if(shouldJustLoadFromCache) {
+            if (shouldJustLoadFromCache) {
                 emit(Resource.Loading(isLoading = false))
                 return@flow
             }
@@ -62,7 +61,10 @@ class StockRepositoryImpl @Inject constructor(
                 dao.clearCompanyListings()
                 dao.insertCompanyListings(listings.map { it.toCompanyListingEntity() })
 
-                emit(Resource.Success(data = dao.searchCompanyListing("").map { it.toCompanyListing() }))
+                emit(
+                    Resource.Success(
+                        data = dao.searchCompanyListing("").map { it.toCompanyListing() })
+                )
                 emit(Resource.Loading(isLoading = false))
             }
         }
