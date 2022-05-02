@@ -2,10 +2,13 @@ package com.rpfcoding.stockmarketwithopencsv.data.repository
 
 import com.rpfcoding.stockmarketwithopencsv.data.csv.CSVParser
 import com.rpfcoding.stockmarketwithopencsv.data.local.StockDatabase
+import com.rpfcoding.stockmarketwithopencsv.data.mapper.toCompanyInfo
 import com.rpfcoding.stockmarketwithopencsv.data.mapper.toCompanyListing
 import com.rpfcoding.stockmarketwithopencsv.data.mapper.toCompanyListingEntity
 import com.rpfcoding.stockmarketwithopencsv.data.remote.StockApi
+import com.rpfcoding.stockmarketwithopencsv.domain.model.CompanyInfo
 import com.rpfcoding.stockmarketwithopencsv.domain.model.CompanyListing
+import com.rpfcoding.stockmarketwithopencsv.domain.model.IntraDayInfo
 import com.rpfcoding.stockmarketwithopencsv.domain.repository.StockRepository
 import com.rpfcoding.stockmarketwithopencsv.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +22,8 @@ import javax.inject.Singleton
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
     private val db: StockDatabase,
-    private val parser: CSVParser<CompanyListing>
+    private val companyListingsParser: CSVParser<CompanyListing>,
+    private val intraDayInfoParser: CSVParser<IntraDayInfo>,
 ) : StockRepository {
 
     private val dao = db.dao
@@ -46,14 +50,14 @@ class StockRepositoryImpl @Inject constructor(
             val remoteListings = try {
                 val response = api.getListings()
 
-                parser.parse(response.byteStream())
+                companyListingsParser.parse(response.byteStream())
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Could not load data"))
+                emit(Resource.Error(message = "Could not load company listings."))
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Could not load data"))
+                emit(Resource.Error(message = "Could not load company listings."))
                 null
             }
 
@@ -67,6 +71,36 @@ class StockRepositoryImpl @Inject constructor(
                 )
                 emit(Resource.Loading(isLoading = false))
             }
+        }
+    }
+
+    override suspend fun getIntraDayInfo(symbol: String): Resource<List<IntraDayInfo>> {
+        return try {
+            val response = api.getIntraDayInfo(symbol)
+
+            val results = intraDayInfoParser.parse(response.byteStream())
+
+            Resource.Success(results)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Could not load intra day information.")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Could not load intra day information.")
+        }
+    }
+
+    override suspend fun getCompanyInfo(symbol: String): Resource<CompanyInfo> {
+        return try {
+            val response = api.getCompanyInfo(symbol)
+
+            Resource.Success(response.toCompanyInfo())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Could not load company information.")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Could not load company information.")
         }
     }
 }

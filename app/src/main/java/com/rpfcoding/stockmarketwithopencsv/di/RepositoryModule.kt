@@ -2,8 +2,10 @@ package com.rpfcoding.stockmarketwithopencsv.di
 
 import com.rpfcoding.stockmarketwithopencsv.data.csv.CSVParser
 import com.rpfcoding.stockmarketwithopencsv.data.csv.CompanyListingsParser
+import com.rpfcoding.stockmarketwithopencsv.data.csv.IntraDayInfoParser
 import com.rpfcoding.stockmarketwithopencsv.data.repository.StockRepositoryImpl
 import com.rpfcoding.stockmarketwithopencsv.domain.model.CompanyListing
+import com.rpfcoding.stockmarketwithopencsv.domain.model.IntraDayInfo
 import com.rpfcoding.stockmarketwithopencsv.domain.repository.StockRepository
 import dagger.Binds
 import dagger.Module
@@ -18,6 +20,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindCompanyListingsParser(companyListingsParser: CompanyListingsParser): CSVParser<CompanyListing>
+
+    @Binds
+    @Singleton
+    abstract fun bindIntraDayInfoParser(intraDayInfoParser: IntraDayInfoParser): CSVParser<IntraDayInfo>
 
     @Binds
     @Singleton
