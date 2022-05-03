@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
-    private val db: StockDatabase,
+    db: StockDatabase,
     private val companyListingsParser: CSVParser<CompanyListing>,
     private val intraDayInfoParser: CSVParser<IntraDayInfo>,
 ) : StockRepository {
@@ -92,9 +92,9 @@ class StockRepositoryImpl @Inject constructor(
 
     override suspend fun getCompanyInfo(symbol: String): Resource<CompanyInfo> {
         return try {
-            val response = api.getCompanyInfo(symbol)
+            val result = api.getCompanyInfo(symbol)
 
-            Resource.Success(response.toCompanyInfo())
+            Resource.Success(result.toCompanyInfo())
         } catch (e: IOException) {
             e.printStackTrace()
             Resource.Error(message = "Could not load company information.")
