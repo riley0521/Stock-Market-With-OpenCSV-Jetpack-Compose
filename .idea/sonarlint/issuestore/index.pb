@@ -39,3 +39,9 @@ Fapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/MainActivity.kt,d\c\dc5
 Mapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/di/RepositoryModule.kt,c\a\cabfd30903cfd4400bc617518893760e55b3287b
 ‰
 Yapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/data/remote/dto/IntraDayInfoDto.kt,0\b\0b89e7ba1fdccc968b58be5431207c6bb386842b
+ˆ
+Xapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/data/remote/dto/CompanyInfoDto.kt,2\f\2f0e8fd04d52c721268ce5a86c3bbc51f5c36741
+‚
+Rapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/domain/model/CompanyInfo.kt,b\f\bfb65a34a3dea5eefde78f8985bebc0f6e904c68
+ˆ
+Xapp/src/main/java/com/rpfcoding/stockmarketwithopencsv/data/mapper/IntraDayInfoMapper.kt,0\0\00686ddd76dab26b4f07efd1374fe7a7d161b151
