@@ -21,12 +21,12 @@ import javax.inject.Singleton
 @Singleton
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
-    db: StockDatabase,
     private val companyListingsParser: CSVParser<CompanyListing>,
     private val intraDayInfoParser: CSVParser<IntraDayInfo>,
+    db: StockDatabase
 ) : StockRepository {
 
-    private val dao = db.dao
+    private val stockDao = db.stockDao
 
     override suspend fun getCompanyListings(
         fetchFromRemote: Boolean,
@@ -35,7 +35,7 @@ class StockRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading(isLoading = true))
 
-            val localListings = dao.searchCompanyListing(query)
+            val localListings = stockDao.searchCompanyListing(query)
 
             emit(Resource.Success(data = localListings.map { it.toCompanyListing() }))
 
@@ -62,12 +62,12 @@ class StockRepositoryImpl @Inject constructor(
             }
 
             remoteListings?.let { listings ->
-                dao.clearCompanyListings()
-                dao.insertCompanyListings(listings.map { it.toCompanyListingEntity() })
+                stockDao.clearCompanyListings()
+                stockDao.insertCompanyListings(listings.map { it.toCompanyListingEntity() })
 
                 emit(
                     Resource.Success(
-                        data = dao.searchCompanyListing("").map { it.toCompanyListing() })
+                        data = stockDao.searchCompanyListing("").map { it.toCompanyListing() })
                 )
                 emit(Resource.Loading(isLoading = false))
             }
