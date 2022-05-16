@@ -3,12 +3,10 @@
 The data of this application comes from alphavantage.co
 
 ## Tech stack:
-- Navigation Architecture
+- Jetpack Libraries: Navigation Architecture, Dagger Hilt, Room Database
 - Retrofit
 - Moshi
 - OpenCSV
-- Dagger Hilt
-- Room Database
 - Kotlin Coroutines and Flow
 
 ## Screenshots:
