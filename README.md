@@ -2,6 +2,15 @@
 
 The data of this application comes from alphavantage.co
 
+## Tech stack:
+- Navigation Architecture
+- Retrofit
+- Moshi
+- OpenCSV
+- Dagger Hilt
+- Room Database
+- Kotlin Coroutines and Flow
+
 ## Screenshots:
 
 <p>
