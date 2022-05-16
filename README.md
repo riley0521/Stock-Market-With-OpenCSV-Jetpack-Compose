@@ -1,6 +1,6 @@
 # Stock-Market-With-OpenCSV-Jetpack-Compose
 
-The data of this application comes from alphavantage.co
+The data of this application comes from https://www.alphavantage.co/
 
 ## Tech stack:
 - Jetpack Libraries: Navigation Architecture, Dagger Hilt, Room Database
